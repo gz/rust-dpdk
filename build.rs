@@ -10,6 +10,7 @@ fn main() {
         .generate_inline_functions(true)
         .clang_arg("-I/usr/local/include/dpdk")
         .clang_arg("-Wno-error=implicit-function-declaration")
+        .clang_arg("-fno-inline-functions")
         .generate()
         .expect("Unable to generate bindings");
     let out_path = PathBuf::from("src");
