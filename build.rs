@@ -1,12 +1,18 @@
 extern crate bindgen;
+extern crate cc;
 
 use std::path::PathBuf;
 use std::process::Command;
 
 fn main() {
     println!("cargo:rustc-link-lib=dpdk");
+    cc::Build::new()
+        .flag("-I/usr/local/include/dpdk")
+        .file("dpdk-inlined.c")
+        .compile("dpdk-inlined.a");
     let bindings = bindgen::Builder::default()
         .header("rte.h")
+        .header("dpdk-inlined.h")
         .generate_inline_functions(true)
         .clang_arg("-I/usr/local/include/dpdk")
         .clang_arg("-Wno-error=implicit-function-declaration")
